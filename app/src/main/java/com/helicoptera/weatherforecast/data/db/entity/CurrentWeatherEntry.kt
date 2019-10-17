@@ -9,15 +9,15 @@ const val CURRENT_WEATHER_ID = 0
 
 @Entity(tableName = "CURRENT_WEATHER")
 data class CurrentWeatherEntry(
-    val feelslike: Int,
+    val feelslike: Double,
     @SerializedName("is_day")
     val isDay: String,
-    val precip: Int,
-    val temperature: Int,
+    val precip: Double,
+    val temperature: Double,
     @SerializedName("weather_code")
-    val weatherCode: Int,
+    val weatherCode: Double,
     @SerializedName("uv_index")
-    val visibility: Int,
+    val visibility: Double,
     @SerializedName("weather_descriptions")
     val weatherDescriptions: List<String>,
     @SerializedName("weather_icons")
@@ -25,7 +25,7 @@ data class CurrentWeatherEntry(
     @SerializedName("wind_dir")
     val windDir: String,
     @SerializedName("wind_speed")
-    val windSpeed: Int
+    val windSpeed: Double
 ){
     @PrimaryKey(autoGenerate = false)
     var id: Int = CURRENT_WEATHER_ID
