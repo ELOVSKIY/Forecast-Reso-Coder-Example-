@@ -1,5 +1,7 @@
 package com.helicoptera.weatherforecast.data
 
+import com.helicoptera.weatherforecast.data.network.ConnectivityInterceptor
+import com.helicoptera.weatherforecast.data.network.ConnectivityInterceptorImpl
 import com.helicoptera.weatherforecast.data.network.response.CurrentWeatherResponse
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import kotlinx.coroutines.Deferred
@@ -23,7 +25,8 @@ interface WeatherStackApiService {
     ): Deferred<CurrentWeatherResponse>
 
     companion object{
-        operator fun invoke(): WeatherStackApiService{
+        operator fun invoke(
+            connectivityInterceptor: ConnectivityInterceptor): WeatherStackApiService{
             val requestInterceptor = Interceptor {chain ->
                 val url = chain.request().url()
                     .newBuilder()
@@ -39,6 +42,7 @@ interface WeatherStackApiService {
 
             val okHttpClient = OkHttpClient.Builder()
                 .addInterceptor(requestInterceptor)
+                .addInterceptor(connectivityInterceptor)
                 .build()
             return Retrofit.Builder()
                 .client(okHttpClient)

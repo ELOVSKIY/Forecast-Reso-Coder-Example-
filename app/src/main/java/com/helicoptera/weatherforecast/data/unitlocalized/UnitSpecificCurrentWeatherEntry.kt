@@ -1,5 +1,6 @@
 package com.helicoptera.weatherforecast.data.unitlocalized
 
+//TODO(Нормальные типы Int)
 interface UnitSpecificCurrentWeatherEntry{
     val feelslike: Double
     val isDay: String

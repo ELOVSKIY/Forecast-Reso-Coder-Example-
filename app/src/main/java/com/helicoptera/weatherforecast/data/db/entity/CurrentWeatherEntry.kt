@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 
 const val CURRENT_WEATHER_ID = 0
-
+//TODO(Нормальные типы Int)
 @Entity(tableName = "CURRENT_WEATHER")
 data class CurrentWeatherEntry(
     val feelslike: Double,

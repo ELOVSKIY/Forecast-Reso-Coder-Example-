@@ -6,9 +6,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.Observer
 
 import com.helicoptera.weatherforecast.R
 import com.helicoptera.weatherforecast.data.WeatherStackApiService
+import com.helicoptera.weatherforecast.data.db.ForecastDatabase
+import com.helicoptera.weatherforecast.data.network.ConnectivityInterceptorImpl
+import com.helicoptera.weatherforecast.data.network.WeatherNetworkDatasourceImpl
 import kotlinx.android.synthetic.main.current_weather_fragment.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -33,13 +37,15 @@ class CurrentWeatherFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProviders.of(this).get(CurrentWeatherViewModel::class.java)
-        val apiService = WeatherStackApiService()
+        val apiService = WeatherStackApiService(ConnectivityInterceptorImpl(context!!))
+        val weatherNetworkDataSource = WeatherNetworkDatasourceImpl(apiService)
+
+        weatherNetworkDataSource.downloadedCurrentWeather.observe(this, Observer {
+            textView.text = it.toString()
+        })
 
         GlobalScope.launch(Dispatchers.Main) {
-            val currentWeatherResponse
-                    = apiService.getCurrentWeather("London").await()
-            val response = currentWeatherResponse
-            textView.text = response.currentWeatherEntry.toString()
+            weatherNetworkDataSource.fetchCurrentWeather("London", "m")
         }
     }
 
