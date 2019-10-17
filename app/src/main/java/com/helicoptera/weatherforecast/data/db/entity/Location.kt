@@ -1,4 +1,4 @@
-package com.helicoptera.weatherforecast.data.response
+package com.helicoptera.weatherforecast.data.db.entity
 
 
 import com.google.gson.annotations.SerializedName
