@@ -43,7 +43,7 @@ class ForecastRepositoryImpl(
 
     private suspend fun fetchCurrentWeather(units: String){
         weatherNetworkDataSource.fetchCurrentWeather(
-            "Los Angeles", units
+            "Moscow", units
         )
     }
 
