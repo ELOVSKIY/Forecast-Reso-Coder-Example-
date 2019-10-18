@@ -7,7 +7,7 @@ import com.helicoptera.weatherforecast.data.WeatherStackApiService
 import com.helicoptera.weatherforecast.data.network.response.CurrentWeatherResponse
 import com.helicoptera.weatherforecast.internal.NoConnectivityException
 
-class WeatherNetworkDatasourceImpl(
+class WeatherNetworkDataSourceImpl(
     private val weatherStackApiService: WeatherStackApiService
 ) : WeatherNetworkDataSource {
 

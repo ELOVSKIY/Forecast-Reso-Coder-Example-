@@ -10,9 +10,8 @@ import androidx.lifecycle.Observer
 
 import com.helicoptera.weatherforecast.R
 import com.helicoptera.weatherforecast.data.WeatherStackApiService
-import com.helicoptera.weatherforecast.data.db.ForecastDatabase
 import com.helicoptera.weatherforecast.data.network.ConnectivityInterceptorImpl
-import com.helicoptera.weatherforecast.data.network.WeatherNetworkDatasourceImpl
+import com.helicoptera.weatherforecast.data.network.WeatherNetworkDataSourceImpl
 import kotlinx.android.synthetic.main.current_weather_fragment.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -38,7 +37,7 @@ class CurrentWeatherFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProviders.of(this).get(CurrentWeatherViewModel::class.java)
         val apiService = WeatherStackApiService(ConnectivityInterceptorImpl(context!!))
-        val weatherNetworkDataSource = WeatherNetworkDatasourceImpl(apiService)
+        val weatherNetworkDataSource = WeatherNetworkDataSourceImpl(apiService)
 
         weatherNetworkDataSource.downloadedCurrentWeather.observe(this, Observer {
             textView.text = it.toString()
