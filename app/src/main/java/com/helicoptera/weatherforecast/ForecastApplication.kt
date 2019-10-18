@@ -1,12 +1,15 @@
 package com.helicoptera.weatherforecast
 
 import android.app.Application
+import androidx.preference.PreferenceManager
 import com.helicoptera.weatherforecast.data.WeatherStackApiService
 import com.helicoptera.weatherforecast.data.db.ForecastDatabase
 import com.helicoptera.weatherforecast.data.network.ConnectivityInterceptor
 import com.helicoptera.weatherforecast.data.network.ConnectivityInterceptorImpl
 import com.helicoptera.weatherforecast.data.network.WeatherNetworkDataSource
 import com.helicoptera.weatherforecast.data.network.WeatherNetworkDataSourceImpl
+import com.helicoptera.weatherforecast.data.provider.UnitProvider
+import com.helicoptera.weatherforecast.data.provider.UnitProviderImpl
 import com.helicoptera.weatherforecast.data.repository.ForecastRepository
 import com.helicoptera.weatherforecast.data.repository.ForecastRepositoryImpl
 import com.helicoptera.weatherforecast.ui.weather.current.CurrentWeatherViewModelFactory
@@ -29,11 +32,13 @@ class ForecastApplication : Application(), KodeinAware {
         bind() from singleton { WeatherStackApiService(instance()) }
         bind<WeatherNetworkDataSource>() with singleton { WeatherNetworkDataSourceImpl(instance()) }
         bind<ForecastRepository>() with singleton { ForecastRepositoryImpl(instance(), instance()) }
-        bind() from provider {CurrentWeatherViewModelFactory(instance())}
+        bind<UnitProvider>() with singleton { UnitProviderImpl(instance()) }
+        bind() from provider {CurrentWeatherViewModelFactory(instance(), instance() )}
     }
 
     override fun onCreate() {
         super.onCreate()
         AndroidThreeTen.init(this)
+        PreferenceManager.setDefaultValues(this, R.xml.preferences, false)
     }
 }
