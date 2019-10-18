@@ -16,7 +16,7 @@
         android:label="future_detail_fragment"
         tools:layout="@layout/future_detail_fragment" />
     <fragment
-        android:id="@+id/futureWeatherFragment"
+        android:id="@+id/futureListWeatherFragment"
         android:name="com.helicoptera.weatherforecast.ui.weather.future.list.FutureListWeatherFragment"
         android:label="future_list_weather_fragment"
         tools:layout="@layout/future_list_weather_fragment" />

@@ -28,22 +28,22 @@ class ForecastRepositoryImpl(
         }
     }
 
-    override suspend fun getCurrentWeather(): LiveData<out UnitSpecificCurrentWeatherEntry> {
+    override suspend fun getCurrentWeather(units: String): LiveData<out UnitSpecificCurrentWeatherEntry> {
         return withContext(Dispatchers.IO){
-            initWeatherData()
+            initWeatherData(units)
             return@withContext currentWeatherDao.getWeatherUnit()
         }
     }
 
-    private suspend fun initWeatherData(){
+    private suspend fun initWeatherData(units: String){
         if (isFetchCurrentNeeded(ZonedDateTime.now().minusMinutes(60))){
-            fetchCurrentWeather()
+            fetchCurrentWeather(units)
         }
     }
 
-    private suspend fun fetchCurrentWeather(){
+    private suspend fun fetchCurrentWeather(units: String){
         weatherNetworkDataSource.fetchCurrentWeather(
-            "Los Angeles"
+            "Los Angeles", units
         )
     }
 

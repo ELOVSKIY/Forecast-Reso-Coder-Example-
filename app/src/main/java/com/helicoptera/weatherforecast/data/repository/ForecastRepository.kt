@@ -5,6 +5,6 @@ import com.helicoptera.weatherforecast.data.unitlocalized.UnitSpecificCurrentWea
 
 interface ForecastRepository {
 
-    suspend fun getCurrentWeather()
+    suspend fun getCurrentWeather(units: String)
             : LiveData<out UnitSpecificCurrentWeatherEntry>
 }
