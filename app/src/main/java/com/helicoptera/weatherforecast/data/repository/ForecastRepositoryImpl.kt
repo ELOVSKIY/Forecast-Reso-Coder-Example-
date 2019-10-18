@@ -24,6 +24,7 @@ class ForecastRepositoryImpl(
 
     private fun persistFetchedCurrentWeather(fetchedWeather: CurrentWeatherResponse){
         GlobalScope.launch(Dispatchers.IO ) {
+            if (fetchedWeather.currentWeatherEntry!=null)
             currentWeatherDao.upsert(fetchedWeather.currentWeatherEntry)
         }
     }

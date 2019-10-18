@@ -1,5 +1,6 @@
 package com.helicoptera.weatherforecast.ui.weather.current
 
+import android.annotation.SuppressLint
 import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -59,7 +60,7 @@ class CurrentWeatherFragment : ScopedFragment(), KodeinAware {
             updateVisibility(it.visibility)
 
             GlideApp.with(this@CurrentWeatherFragment)
-                .load("${it.weatherIcons[0]}")
+                .load(it.weatherIcons[0])
                 .into(imageView_condition_icon)
 
         })
@@ -78,6 +79,7 @@ class CurrentWeatherFragment : ScopedFragment(), KodeinAware {
         (activity as? AppCompatActivity)?.supportActionBar?.subtitle = "Today"
     }
 
+    @SuppressLint("SetTextI18n")
     private fun updateTemperature(temperature: Double, feelsLike: Double) {
         val unitAbbreviation = chooseLocalizedUnitAbbreviation("°C", "°F")
         textView_temperature.text = "$temperature$unitAbbreviation"
@@ -88,16 +90,19 @@ class CurrentWeatherFragment : ScopedFragment(), KodeinAware {
         textView_condition.text = condition
     }
 
+    @SuppressLint("SetTextI18n")
     private fun updatePrecipitation(precipitationValue: Double){
         val unitAbbreviation = chooseLocalizedUnitAbbreviation("mm", "in")
         textView_precipitation.text = "Precipitation $precipitationValue $unitAbbreviation"
     }
 
+    @SuppressLint("SetTextI18n")
     private fun updateWind(windDirection: String, windSpeed: Double){
         val unitAbbreviation = chooseLocalizedUnitAbbreviation("kmh", "mih")
         textView_wind.text = "Wind $windDirection, $windSpeed $unitAbbreviation"
     }
 
+    @SuppressLint("SetTextI18n")
     private fun updateVisibility(visibilityDistance: Double){
         val unitAbbreviation = chooseLocalizedUnitAbbreviation("km", "mi")
         textView_visibility.text = "Visibility $visibilityDistance $unitAbbreviation"

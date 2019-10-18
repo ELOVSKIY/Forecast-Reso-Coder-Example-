@@ -22,7 +22,7 @@
             android:key="UNIT_SYSTEM"
             android:title="Unit system"
             android:summary="%s"
-            android:defaultValue="METRIC"
+            android:defaultValue="m"
             android:entries="@array/UnitsSystemEntries"
             android:entryValues="@array/UnitsSystemValues">
         </ListPreference>
