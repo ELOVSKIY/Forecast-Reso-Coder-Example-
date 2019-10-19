@@ -8,6 +8,8 @@ import com.helicoptera.weatherforecast.data.network.ConnectivityInterceptor
 import com.helicoptera.weatherforecast.data.network.ConnectivityInterceptorImpl
 import com.helicoptera.weatherforecast.data.network.WeatherNetworkDataSource
 import com.helicoptera.weatherforecast.data.network.WeatherNetworkDataSourceImpl
+import com.helicoptera.weatherforecast.data.provider.LocationProvider
+import com.helicoptera.weatherforecast.data.provider.LocationProviderImpl
 import com.helicoptera.weatherforecast.data.provider.UnitProvider
 import com.helicoptera.weatherforecast.data.provider.UnitProviderImpl
 import com.helicoptera.weatherforecast.data.repository.ForecastRepository
@@ -31,7 +33,10 @@ class ForecastApplication : Application(), KodeinAware {
         bind<ConnectivityInterceptor>() with singleton { ConnectivityInterceptorImpl(instance()) }
         bind() from singleton { WeatherStackApiService(instance()) }
         bind<WeatherNetworkDataSource>() with singleton { WeatherNetworkDataSourceImpl(instance()) }
-        bind<ForecastRepository>() with singleton { ForecastRepositoryImpl(instance(), instance()) }
+        bind<LocationProvider>() with singleton { LocationProviderImpl() }
+        bind() from singleton { instance<ForecastDatabase>().weatherLocationDao() }
+        bind<ForecastRepository>() with singleton { ForecastRepositoryImpl(instance(),
+            instance(), instance(),instance()) }
         bind<UnitProvider>() with singleton { UnitProviderImpl(instance()) }
         bind() from provider {CurrentWeatherViewModelFactory(instance(), instance() )}
     }

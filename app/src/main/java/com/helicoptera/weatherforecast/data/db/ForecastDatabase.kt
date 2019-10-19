@@ -3,14 +3,17 @@ package com.helicoptera.weatherforecast.data.db
 import android.content.Context
 import androidx.room.*
 import com.helicoptera.weatherforecast.data.db.entity.CurrentWeatherEntry
+import com.helicoptera.weatherforecast.data.db.entity.WeatherLocation
 
 @Database(
-    entities = [CurrentWeatherEntry::class],
+    entities = [CurrentWeatherEntry::class, WeatherLocation::class],
     version = 1
 )
 @TypeConverters(Converters::class)
 abstract class ForecastDatabase : RoomDatabase() {
     abstract fun currentWeatherDao(): CurrentWeatherDao
+
+    abstract fun weatherLocationDao(): WeatherLocationDao
 
     companion object {
         @Volatile

@@ -47,11 +47,12 @@ class CurrentWeatherFragment : ScopedFragment(), KodeinAware {
     private fun bindUI() = launch {
         val currentWeather = viewModel.weather.await()
 
+        val weatherLcoation = viewModel.weatherLocation.await()
+
         currentWeather.observe(this@CurrentWeatherFragment, Observer {
             if (it == null) return@Observer
 
             group_loading.visibility = View.GONE
-            updateLocation("Minsk")
             updateDateToToday()
             updateTemperature(it.temperature, it.feelslike)
             updateCondition(it.weatherDescriptions[0])
@@ -65,6 +66,11 @@ class CurrentWeatherFragment : ScopedFragment(), KodeinAware {
 
         })
 
+        weatherLcoation.observe(this@CurrentWeatherFragment, Observer {location ->
+            if (location == null) return@Observer
+
+            updateLocation(location.name)
+        })
     }
 
     private fun chooseLocalizedUnitAbbreviation(metrix: String, imperial: String): String{

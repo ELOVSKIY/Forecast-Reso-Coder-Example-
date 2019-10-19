@@ -15,7 +15,7 @@ class UnitProviderImpl(context: Context) : UnitProvider {
         get() = PreferenceManager.getDefaultSharedPreferences(appContext)
 
     override fun getUnitSystem(): String {
-        val selectedName = preferences.getString(UNIT_SYSTEM, UnitSystem.METRIC)//Имя как и в xml файле
+        val selectedName = preferences.getString(UNIT_SYSTEM, UnitSystem.METRIC)
         return selectedName!!
     }
 }
