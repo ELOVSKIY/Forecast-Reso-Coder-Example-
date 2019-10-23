@@ -1,7 +1,9 @@
 package com.helicoptera.weatherforecast
 
 import android.app.Application
+import android.content.Context
 import androidx.preference.PreferenceManager
+import com.google.android.gms.location.LocationServices
 import com.helicoptera.weatherforecast.data.WeatherStackApiService
 import com.helicoptera.weatherforecast.data.db.ForecastDatabase
 import com.helicoptera.weatherforecast.data.network.ConnectivityInterceptor
@@ -33,7 +35,8 @@ class ForecastApplication : Application(), KodeinAware {
         bind<ConnectivityInterceptor>() with singleton { ConnectivityInterceptorImpl(instance()) }
         bind() from singleton { WeatherStackApiService(instance()) }
         bind<WeatherNetworkDataSource>() with singleton { WeatherNetworkDataSourceImpl(instance()) }
-        bind<LocationProvider>() with singleton { LocationProviderImpl() }
+        bind() from provider { LocationServices.getFusedLocationProviderClient(instance<Context>()) }
+        bind<LocationProvider>() with singleton { LocationProviderImpl(instance(), instance()) }
         bind() from singleton { instance<ForecastDatabase>().weatherLocationDao() }
         bind<ForecastRepository>() with singleton { ForecastRepositoryImpl(instance(),
             instance(), instance(),instance()) }
