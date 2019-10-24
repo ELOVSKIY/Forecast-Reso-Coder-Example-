@@ -9,12 +9,13 @@ import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
 
 class LifecycleBoundLocationManager(
-    private val lifeCicleOwner: LifecycleOwner,
+    lifecycleOwner: LifecycleOwner,
     private val fusedLocationProviderClient: FusedLocationProviderClient,
     private val locationCallback: LocationCallback
 ) :LifecycleObserver {
+
     init{
-        lifeCicleOwner.lifecycle.addObserver(this)
+        lifecycleOwner.lifecycle.addObserver(this)
     }
 
     private val locationRequest = LocationRequest().apply {

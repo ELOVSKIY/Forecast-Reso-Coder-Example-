@@ -17,22 +17,26 @@ const val CUSTOM_LOCATION = "CUSTOM_LOCATION"
 
 class LocationProviderImpl(
     private val fusedLocationProviderClient: FusedLocationProviderClient,
-    context: Context) : PreferenceProvider(context), LocationProvider {
+    context: Context
+) : PreferenceProvider(context), LocationProvider {
 
     //зачем контекст если он есть в провайдере
 
     override suspend fun hasLocationChanged(lastWeatherLocation: WeatherLocation): Boolean {
         val deviceLocationChanged = try {
             hasDeviceLocationChanged(lastWeatherLocation)
-        } catch (e: LocationPermissionNotGrantedException){
+        } catch (e: LocationPermissionNotGrantedException) {
             return false
         }
         return deviceLocationChanged || hasCustomLocationChanged(lastWeatherLocation)
     }
 
     private fun hasCustomLocationChanged(lastWeatherLocation: WeatherLocation): Boolean {
-        val customLocationName = getCustomLocationName()
-        return customLocationName != lastWeatherLocation.name
+       if (!isUsingDeviceLocation()) {
+           val customLocationName = getCustomLocationName()
+           return customLocationName != lastWeatherLocation.name
+       }
+        return false
     }
 
     private fun getCustomLocationName(): String? {
@@ -54,32 +58,34 @@ class LocationProviderImpl(
                         > comparisonThreshold)
     }
 
-    private fun isUsingDeviceLocation(): Boolean{
+    private fun isUsingDeviceLocation(): Boolean {
         return preferences.getBoolean(USE_DEVICE_LOCATION, true)
     }
 
-    private fun getLastDeviceLocation(): Deferred<Location?>{
+    private fun getLastDeviceLocation(): Deferred<Location?> {
         return if (hasLocationPermission())
             fusedLocationProviderClient.lastLocation.asDeffered()
         else
             throw LocationPermissionNotGrantedException()
     }
 
-    private fun hasLocationPermission(): Boolean{
-        return ContextCompat.checkSelfPermission(appContext,
-            Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
+    private fun hasLocationPermission(): Boolean {
+        return ContextCompat.checkSelfPermission(
+            appContext,
+            Manifest.permission.ACCESS_COARSE_LOCATION
+        ) == PackageManager.PERMISSION_GRANTED
     }
 
     override suspend fun getPreferredLocationString(): String {
-        if (isUsingDeviceLocation()){
-            try{
+        if (isUsingDeviceLocation()) {
+            try {
                 val deviceLocation = getLastDeviceLocation().await()
                     ?: return "${getCustomLocationName()}"
                 return "${deviceLocation.latitude},${deviceLocation.longitude}"
-            }catch (e: LocationPermissionNotGrantedException){
+            } catch (e: LocationPermissionNotGrantedException) {
                 return "${getCustomLocationName()}"
             }
-        }else{
+        } else {
             return "${getCustomLocationName()}"
         }
     }
